@@ -1,0 +1,1078 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<h2 class="sr-only">Personal Life OS for a Process Engineer in UAE — daily dhikr counter, 5-time prayer tracker, word of the day, engineering concept of the day, expenses tracker, life planning tab, thought vault, goal tracker, and AI amplifier with automatic cloud saving.</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);font-size:14px;color:var(--color-text-primary)}
+.app{padding:.75rem 0}
+.nav{display:flex;gap:4px;margin-bottom:1.25rem;flex-wrap:wrap}
+.nb{padding:5px 10px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:transparent;cursor:pointer;font-size:12px;color:var(--color-text-secondary);transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.nb.active{background:#EEEDFE;color:#3C3489;border-color:#534AB7;font-weight:500}
+.pg{display:none}.pg.active{display:block}
+.cbar{font-size:11px;color:var(--color-text-tertiary);display:flex;align-items:center;gap:5px;margin-bottom:.75rem}
+.cdot{width:7px;height:7px;border-radius:50%;background:#97C459;display:inline-block;flex-shrink:0}
+.card{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:.75rem}
+.sh{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:.6rem;display:flex;align-items:center;gap:6px}
+.badge{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.bp{background:#EEEDFE;color:#3C3489}.bg{background:#EAF3DE;color:#27500A}.bb{background:#E6F1FB;color:#0C447C}.ba{background:#FAEEDA;color:#633806}.br{background:#FBEAF0;color:#72243E}.bgr{background:#F1EFE8;color:#444441}
+.btn-p{padding:8px 16px;border-radius:var(--border-radius-md);border:none;background:#534AB7;color:white;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.btn-p:hover{opacity:.85}
+.btn-s{padding:7px 14px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);font-size:13px;cursor:pointer}
+.btn-s:hover{background:var(--color-background-secondary)}
+.btn-xs{padding:4px 9px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);font-size:11px;cursor:pointer}
+.btn-xs:hover{background:var(--color-background-secondary)}
+.btn-xs.grn{color:#3B6D11;border-color:#3B6D11}
+.flash{display:none;font-size:12px;color:#27500A;background:#EAF3DE;padding:3px 9px;border-radius:var(--border-radius-md)}
+textarea{width:100%;padding:9px 11px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);font-family:var(--font-sans);font-size:13px;resize:vertical;color:var(--color-text-primary);background:var(--color-background-primary);line-height:1.6;min-height:70px}
+textarea:focus{outline:none;border-color:#534AB7}
+input[type=text],input[type=number]{width:100%;padding:8px 11px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);font-family:var(--font-sans);font-size:13px;color:var(--color-text-primary);background:var(--color-background-primary);margin-bottom:7px}
+input[type=text]:focus,input[type=number]:focus{outline:none;border-color:#534AB7}
+select{padding:7px 9px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;max-width:100%}
+.row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:.75rem}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;text-align:center}
+.stat-n{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.stat-l{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.sep{border:none;border-top:.5px solid var(--color-border-tertiary);margin:.75rem 0}
+.hero{background:#EEEDFE;border-radius:var(--border-radius-lg);border:.5px solid #AFA9EC;padding:1.1rem 1.3rem;margin-bottom:.75rem}
+.q-arabic{font-size:22px;color:#26215C;line-height:2;text-align:right;direction:rtl;margin-bottom:6px;font-family:'Amiri',var(--font-serif),serif;unicode-bidi:bidi-override}
+.q-text{font-size:15px;font-weight:500;color:#26215C;line-height:1.65;font-family:var(--font-serif);margin-bottom:4px}
+.q-ref{font-size:12px;color:#534AB7}
+.q-auth{font-size:12px;color:#7F77DD}
+.qtabs{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+.qtab{padding:3px 10px;border-radius:20px;border:.5px solid #AFA9EC;background:transparent;cursor:pointer;font-size:12px;color:#534AB7}
+.qtab.active{background:#534AB7;color:white}
+.rbtn{background:none;border:.5px solid #AFA9EC;cursor:pointer;color:#534AB7;font-size:11px;padding:3px 9px;border-radius:var(--border-radius-md);margin-top:7px}
+.rbtn:hover{background:#CECBF6}
+.prayer-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:.5rem}
+.prayer-btn{border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);cursor:pointer;padding:10px 4px;text-align:center;transition:all .15s;min-width:0;width:100%}
+.prayer-btn.done{background:#EAF3DE;border-color:#3B6D11}
+.prayer-name{font-size:12px;font-weight:500;color:var(--color-text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prayer-time{font-size:9px;color:var(--color-text-tertiary);margin-top:2px;white-space:nowrap}
+.prayer-tick{font-size:16px;color:var(--color-text-tertiary);display:block;margin-bottom:2px}
+.prayer-btn.done .prayer-tick{color:#3B6D11}
+.dhikr-card{background:var(--color-background-primary);border:.5px solid #AFA9EC;border-radius:var(--border-radius-lg);padding:.9rem 1.1rem;margin-bottom:7px}
+.d-arabic{font-size:22px;color:#26215C;text-align:right;direction:rtl;line-height:2;margin-bottom:4px;font-family:'Amiri',var(--font-serif),serif;unicode-bidi:bidi-override}
+.d-trans{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+.d-meaning{font-size:12px;color:var(--color-text-secondary);line-height:1.5;margin-bottom:4px}
+.d-benefit{font-size:11px;background:#EEEDFE;color:#3C3489;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:8px}
+.d-row{display:flex;align-items:center;gap:8px}
+.d-cnt{font-size:20px;font-weight:500;color:#534AB7;min-width:36px}
+.d-target{font-size:11px;color:var(--color-text-tertiary)}
+.cnt-btn{width:36px;height:36px;border-radius:50%;border:.5px solid #534AB7;background:transparent;cursor:pointer;color:#534AB7;font-size:17px;display:flex;align-items:center;justify-content:center}
+.cnt-btn:hover{background:#EEEDFE}
+.d-prog{flex:1;height:5px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden}
+.d-pfill{height:100%;background:#534AB7;border-radius:3px;transition:width .3s}
+.done-badge{font-size:11px;background:#EAF3DE;color:#27500A;padding:3px 9px;border-radius:20px;border:.5px solid #97C459}
+.word-card{background:linear-gradient(135deg,#EEEDFE,#E6F1FB);border-radius:var(--border-radius-lg);border:.5px solid #AFA9EC;padding:1.1rem 1.3rem;margin-bottom:.75rem}
+.word-main{font-size:22px;font-weight:500;color:#26215C;margin-bottom:3px}
+.word-pos{font-size:12px;color:#534AB7;margin-bottom:6px;font-style:italic}
+.word-def{font-size:14px;color:#3C3489;line-height:1.6;margin-bottom:8px}
+.word-ex{font-size:13px;color:#534AB7;font-style:italic;line-height:1.6;padding:8px 12px;background:rgba(255,255,255,.5);border-radius:var(--border-radius-md);margin-bottom:4px}
+.eng-card{background:#EAF3DE;border-radius:var(--border-radius-lg);border:.5px solid #97C459;padding:1.1rem 1.3rem;margin-bottom:.75rem}
+.eng-concept{font-size:16px;font-weight:500;color:#173404;margin-bottom:4px}
+.eng-cat{font-size:11px;color:#3B6D11;margin-bottom:8px}
+.eng-def{font-size:13px;color:#27500A;line-height:1.65;margin-bottom:8px}
+.eng-formula{font-size:13px;font-family:var(--font-mono);background:rgba(255,255,255,.6);padding:6px 10px;border-radius:var(--border-radius-md);color:#173404;margin-bottom:6px}
+.eng-example{font-size:12px;color:#3B6D11;line-height:1.5;padding:7px 10px;background:rgba(255,255,255,.4);border-radius:var(--border-radius-md)}
+.exp-row{display:grid;grid-template-columns:1fr auto auto;gap:5px;align-items:center;padding:7px 0;border-bottom:.5px solid var(--color-border-tertiary);min-width:0}
+.exp-row:last-child{border-bottom:none}
+.exp-name{font-size:13px;color:var(--color-text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.exp-cat{font-size:11px;color:var(--color-text-secondary)}
+.exp-amt{font-size:13px;font-weight:500;color:var(--color-text-primary);text-align:right}
+.plan-section{margin-bottom:1rem}
+.plan-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:.5px solid var(--color-border-tertiary)}
+.plan-item:last-child{border-bottom:none}
+.plan-cb{width:16px;height:16px;cursor:pointer;accent-color:#534AB7;flex-shrink:0;margin-top:2px}
+.plan-text{font-size:13px;color:var(--color-text-primary);flex:1;line-height:1.5}
+.plan-text.done{text-decoration:line-through;color:var(--color-text-tertiary)}
+.plan-tag{font-size:10px;padding:2px 7px;border-radius:20px;flex-shrink:0}
+.t-item{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 13px;margin-bottom:7px}
+.t-text{font-size:13px;color:var(--color-text-primary);line-height:1.6;margin-bottom:5px}
+.t-meta{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.t-time{font-size:11px;color:var(--color-text-tertiary)}
+.t-actions{display:flex;gap:5px;margin-top:6px}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--color-text-tertiary);padding:2px 4px;border-radius:4px;font-size:13px}
+.del-btn:hover{color:#E24B4A;background:#FCEBEB}
+.expanded{margin-top:7px;padding:8px 11px;background:#EAF3DE;border-radius:var(--border-radius-md);font-size:12px;color:#27500A;line-height:1.65;border-left:3px solid #3B6D11;border-top-left-radius:0;border-bottom-left-radius:0}
+.ai-out{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.9rem;font-size:13px;line-height:1.7;color:var(--color-text-primary);min-height:70px;white-space:pre-wrap;margin-top:8px}
+.ai-out.loading{color:var(--color-text-tertiary);font-style:italic}
+.filt-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.filt{padding:3px 10px;border-radius:20px;border:.5px solid var(--color-border-secondary);background:transparent;cursor:pointer;font-size:12px;color:var(--color-text-secondary)}
+.filt.active{background:#EEEDFE;color:#3C3489;border-color:#534AB7}
+.goal-item{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 13px;margin-bottom:7px}
+.prog-bar{height:5px;background:var(--color-background-secondary);border-radius:3px;margin:6px 0 3px;overflow:hidden}
+.prog-fill{height:100%;background:#534AB7;border-radius:3px;transition:width .4s}
+.tag-b{padding:3px 10px;border-radius:20px;border:.5px solid var(--color-border-secondary);background:transparent;cursor:pointer;font-size:12px;color:var(--color-text-secondary)}
+.tag-b.sel{background:#EEEDFE;color:#3C3489;border-color:#534AB7;font-weight:500}
+.mood-btn{padding:7px 12px;border-radius:20px;border:.5px solid var(--color-border-secondary);background:transparent;cursor:pointer;font-size:13px;color:var(--color-text-secondary)}
+.mood-btn.sel.amazing{background:#EAF3DE;color:#27500A;border-color:#3B6D11}
+.mood-btn.sel.good{background:#E6F1FB;color:#0C447C;border-color:#185FA5}
+.mood-btn.sel.okay{background:#FAEEDA;color:#633806;border-color:#854F0B}
+.mood-btn.sel.low{background:#FBEAF0;color:#72243E;border-color:#993556}
+.aff{background:#EAF3DE;border-radius:var(--border-radius-md);padding:10px 13px;font-size:13px;color:#27500A;line-height:1.6;border:.5px solid #97C459;font-family:var(--font-serif);margin-bottom:.75rem}
+.grat-p{background:#FBEAF0;border-radius:var(--border-radius-md);padding:9px 12px;font-size:13px;color:#72243E;margin-bottom:7px;border:.5px solid #ED93B1}
+.today-bar{background:#EEEDFE;border-radius:var(--border-radius-md);padding:9px 13px;font-size:12px;color:#3C3489;border:.5px solid #AFA9EC;margin-bottom:.75rem;display:flex;align-items:center;gap:7px}
+.streak-bar{display:flex;gap:4px;margin:7px 0 3px;flex-wrap:wrap}
+.sday{width:28px;height:28px;border-radius:6px;background:var(--color-background-secondary);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--color-text-tertiary)}
+.sday.done{background:#534AB7;color:white;font-weight:500}
+
+/* ── Arabic text fix ── */
+[lang="ar"],.arabic-text{font-family:'Amiri',serif;direction:rtl;unicode-bidi:bidi-override}
+
+/* ── Mobile responsive ── */
+@media(max-width:480px){
+  .app{padding:.5rem 0}
+  .nav{gap:3px;margin-bottom:1rem}
+  .nb{padding:5px 8px;font-size:11px;gap:3px}
+  .nb i{display:none}
+  .prayer-grid{grid-template-columns:repeat(5,1fr);gap:4px}
+  .prayer-btn{padding:8px 2px}
+  .prayer-name{font-size:11px}
+  .prayer-time{font-size:8px}
+  .prayer-tick{font-size:14px}
+  .grid2{grid-template-columns:repeat(2,1fr)}
+  .exp-row{grid-template-columns:1fr auto auto;gap:5px}
+  .row{gap:5px}
+  .btn-p,.btn-s{padding:7px 12px;font-size:12px}
+  .d-arabic,.q-arabic{font-size:20px}
+  .word-main{font-size:19px}
+  .stat-n{font-size:18px}
+  .card{padding:.75rem}
+  .hero{padding:.9rem 1rem}
+  .dhikr-card{padding:.75rem .9rem}
+  select,input[type=text],input[type=number]{font-size:16px}/* prevents iOS zoom */
+  textarea{font-size:16px}/* prevents iOS zoom */
+  .d-row{flex-wrap:wrap;gap:6px}
+  .d-cnt{min-width:32px}
+  .qtabs{gap:4px}
+  .qtab{padding:3px 8px;font-size:11px}
+  .filt-row{gap:4px}
+  .filt{padding:3px 8px;font-size:11px}
+  .sh{font-size:14px}
+}
+
+@media(max-width:360px){
+  .prayer-grid{grid-template-columns:repeat(3,1fr)}
+  .nb{padding:4px 6px;font-size:10px}
+}
+</style>
+
+<div class="app">
+<div class="nav">
+  <button class="nb active" onclick="go('home',this)"><i class="ti ti-home" aria-hidden="true"></i> Today</button>
+  <button class="nb" onclick="go('dhikr',this)"><i class="ti ti-moon" aria-hidden="true"></i> Dhikr</button>
+  <button class="nb" onclick="go('learn',this)"><i class="ti ti-school" aria-hidden="true"></i> Learn</button>
+  <button class="nb" onclick="go('plan',this)"><i class="ti ti-map" aria-hidden="true"></i> Plan</button>
+  <button class="nb" onclick="go('actions',this)"><i class="ti ti-rocket" aria-hidden="true"></i> Actions</button>
+  <button class="nb" onclick="go('expenses',this)"><i class="ti ti-wallet" aria-hidden="true"></i> Expenses</button>
+  <button class="nb" onclick="go('vault',this)"><i class="ti ti-brain" aria-hidden="true"></i> Vault</button>
+  <button class="nb" onclick="go('goals',this)"><i class="ti ti-target" aria-hidden="true"></i> Goals</button>
+  <button class="nb" onclick="go('amplify',this)"><i class="ti ti-sparkles" aria-hidden="true"></i> Amplify</button>
+</div>
+
+<!-- TODAY PAGE -->
+<div id="pg-home" class="pg active">
+  <div class="cbar"><span class="cdot" id="cdot"></span><span id="clbl">Connecting...</span></div>
+  <div class="today-bar" id="today-bar"><i class="ti ti-star" aria-hidden="true" style="font-size:16px"></i><span id="today-txt">Loading today's progress...</span></div>
+  <div class="qtabs">
+    <button class="qtab active" onclick="switchQ('quran',this)">Quran</button>
+    <button class="qtab" onclick="switchQ('prophet',this)">Hadith</button>
+    <button class="qtab" onclick="switchQ('elon',this)">Elon</button>
+    <button class="qtab" onclick="switchQ('wisdom',this)">Wisdom</button>
+    <button class="qtab" onclick="switchQ('engineers',this)">Engineers</button>
+  </div>
+  <div class="hero">
+    <div class="q-arabic" id="q-arabic"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-ref" id="q-ref"></div>
+    <div class="q-auth" id="q-auth"></div>
+    <button class="rbtn" onclick="nextQ()"><i class="ti ti-refresh" aria-hidden="true" style="font-size:12px"></i> Next</button>
+  </div>
+  <div class="sh"><i class="ti ti-building-mosque" aria-hidden="true" style="font-size:17px;color:#534AB7"></i> Today's prayers</div>
+  <div class="prayer-grid" id="prayer-grid"></div>
+  <div id="prayer-msg" style="font-size:12px;color:#3B6D11;margin-bottom:.5rem"></div>
+  <div class="sh" style="margin-top:.75rem"><i class="ti ti-sun" aria-hidden="true" style="font-size:17px;color:#854F0B"></i> How are you today?</div>
+  <div class="row" style="margin-bottom:.75rem;gap:6px">
+    <button class="mood-btn" data-m="amazing" onclick="setMood(this)">Amazing</button>
+    <button class="mood-btn" data-m="good" onclick="setMood(this)">Good</button>
+    <button class="mood-btn" data-m="okay" onclick="setMood(this)">Okay</button>
+    <button class="mood-btn" data-m="low" onclick="setMood(this)">Low</button>
+  </div>
+  <div id="mood-box" style="display:none" class="aff"></div>
+  <div class="sep"></div>
+  <div class="sh"><i class="ti ti-heart" aria-hidden="true" style="font-size:16px;color:#993556"></i> Daily gratitude</div>
+  <div class="grat-p" id="grat-p"></div>
+  <textarea id="grat-in" placeholder="Write what you are grateful for today..."></textarea>
+  <div class="row" style="margin-top:7px">
+    <button class="btn-p" onclick="saveGrat()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Save</button>
+    <span class="flash" id="grat-flash">Saved!</span>
+  </div>
+  <div class="sep"></div>
+  <div class="sh"><i class="ti ti-calendar-check" aria-hidden="true" style="font-size:16px;color:#534AB7"></i> This week</div>
+  <div class="streak-bar" id="streak-bar"></div>
+  <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:3px" id="streak-lbl"></div>
+  <div class="grid2" style="margin-top:.75rem">
+    <div class="stat"><div class="stat-n" id="s-thoughts">0</div><div class="stat-l">Thoughts</div></div>
+    <div class="stat"><div class="stat-n" id="s-prayers">0/5</div><div class="stat-l">Prayers today</div></div>
+    <div class="stat"><div class="stat-n" id="s-dhikr">0</div><div class="stat-l">Dhikr done</div></div>
+    <div class="stat"><div class="stat-n" id="s-goals">0</div><div class="stat-l">Goals tracked</div></div>
+  </div>
+</div>
+
+<!-- DHIKR PAGE -->
+<div id="pg-dhikr" class="pg">
+  <div class="aff" style="margin-bottom:.75rem">"Remember Allah and your hearts will find peace." — Quran 13:28</div>
+  <div class="sh"><i class="ti ti-moon" aria-hidden="true" style="font-size:17px;color:#534AB7"></i> Daily dhikr — tap <i class="ti ti-plus" aria-hidden="true"></i> to count</div>
+  <div id="dhikr-list"></div>
+  <div class="row" style="margin-top:.75rem">
+    <button class="btn-p" onclick="resetDhikr()"><i class="ti ti-refresh" aria-hidden="true"></i> Reset today</button>
+    <button class="btn-s" onclick="saveCloud()">Save progress</button>
+    <span class="flash" id="d-flash">Saved!</span>
+  </div>
+</div>
+
+<!-- LEARN PAGE -->
+<div id="pg-learn" class="pg">
+  <div class="sh"><i class="ti ti-vocabulary" aria-hidden="true" style="font-size:17px;color:#3C3489"></i> Word of the day</div>
+  <div class="word-card" id="word-card"></div>
+  <button class="btn-s" onclick="nextWord()" style="margin-bottom:1rem"><i class="ti ti-refresh" aria-hidden="true"></i> New word</button>
+  <div class="sh"><i class="ti ti-settings-2" aria-hidden="true" style="font-size:17px;color:#27500A"></i> Process engineering concept</div>
+  <div class="eng-card" id="eng-card"></div>
+  <button class="btn-s" onclick="nextConcept()"><i class="ti ti-refresh" aria-hidden="true"></i> Next concept</button>
+</div>
+
+<!-- PLAN PAGE -->
+<div id="pg-plan" class="pg">
+  <div class="sh"><i class="ti ti-briefcase" aria-hidden="true" style="font-size:16px;color:#0C447C"></i> Career — Process Engineer (8,000 AED)</div>
+  <div class="card" id="career-plan"></div>
+  <div class="sh"><i class="ti ti-truck" aria-hidden="true" style="font-size:16px;color:#854F0B"></i> Business — Scrap & Metal Import/Export UAE</div>
+  <div class="card" id="biz-plan"></div>
+  <div class="sh"><i class="ti ti-heart" aria-hidden="true" style="font-size:16px;color:#993556"></i> Wedding — July 19, 2025</div>
+  <div class="card" id="wedding-plan"></div>
+  <div class="sh" style="margin-top:.25rem"><i class="ti ti-plus" aria-hidden="true" style="font-size:15px"></i> Add custom plan item</div>
+  <div class="card">
+    <input type="text" id="plan-text-in" placeholder="Plan item or milestone...">
+    <div class="row" style="margin-bottom:7px;gap:6px">
+      <select id="plan-cat-in">
+        <option value="career">Career</option>
+        <option value="business">Business</option>
+        <option value="wedding">Wedding</option>
+        <option value="personal">Personal</option>
+      </select>
+      <select id="plan-priority-in">
+        <option value="high">High priority</option>
+        <option value="med">Medium</option>
+        <option value="low">Low</option>
+      </select>
+    </div>
+    <div class="row">
+      <button class="btn-p" onclick="addPlanItem()"><i class="ti ti-plus" aria-hidden="true"></i> Add</button>
+      <span class="flash" id="plan-flash">Added!</span>
+    </div>
+  </div>
+</div>
+
+<!-- ACTIONS PAGE -->
+<div id="pg-actions" class="pg">
+  <div class="aff" style="margin-bottom:.75rem">"The best of deeds are those done consistently, even if small." — Prophet (PBUH)</div>
+  <div class="sh"><i class="ti ti-rocket" aria-hidden="true" style="font-size:17px;color:#854F0B"></i> Powerful daily actions</div>
+  <div id="actions-list"></div>
+  <div class="sep"></div>
+  <div class="sh" style="margin-top:0"><i class="ti ti-plus" aria-hidden="true" style="font-size:15px"></i> Add your own action</div>
+  <input type="text" id="ca-title" placeholder="My powerful action today...">
+  <input type="text" id="ca-why" placeholder="Why this will change my future...">
+  <div class="row">
+    <button class="btn-p" onclick="addCustomAction()"><i class="ti ti-plus" aria-hidden="true"></i> Add action</button>
+    <span class="flash" id="act-flash">Added!</span>
+  </div>
+</div>
+
+<!-- EXPENSES PAGE -->
+<div id="pg-expenses" class="pg">
+  <div class="grid2" id="exp-stats"></div>
+  <div class="card">
+    <div class="sh" style="margin-bottom:10px"><i class="ti ti-plus" aria-hidden="true"></i> Add expense</div>
+    <input type="text" id="exp-name" placeholder="What did you spend on?">
+    <div class="row" style="margin-bottom:7px;gap:6px">
+      <input type="number" id="exp-amt" placeholder="Amount (AED)" style="width:130px;margin-bottom:0">
+      <select id="exp-cat">
+        <option value="food">Food</option>
+        <option value="transport">Transport</option>
+        <option value="wedding">Wedding</option>
+        <option value="business">Business</option>
+        <option value="personal">Personal</option>
+        <option value="health">Health</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="row">
+      <button class="btn-p" onclick="addExpense()"><i class="ti ti-plus" aria-hidden="true"></i> Add</button>
+      <span class="flash" id="exp-flash">Added!</span>
+    </div>
+  </div>
+  <div class="sh"><i class="ti ti-list" aria-hidden="true" style="font-size:16px"></i> This month's expenses</div>
+  <div class="card" id="exp-list" style="padding:.5rem 1rem"></div>
+  <div class="row" style="margin-top:.5rem">
+    <button class="btn-s" onclick="exportExpCSV()"><i class="ti ti-download" aria-hidden="true"></i> Export CSV</button>
+    <button class="btn-s" onclick="clearExpenses()" style="color:#E24B4A;border-color:#E24B4A">Clear expenses</button>
+  </div>
+</div>
+
+<!-- VAULT PAGE -->
+<div id="pg-vault" class="pg">
+  <div class="cbar"><span class="cdot" id="cdot2"></span><span id="clbl2">...</span></div>
+  <div class="grid2">
+    <div class="stat"><div class="stat-n" id="v-total">0</div><div class="stat-l">Total</div></div>
+    <div class="stat"><div class="stat-n" id="v-pos">0</div><div class="stat-l">Positive</div></div>
+    <div class="stat"><div class="stat-n" id="v-ideas">0</div><div class="stat-l">Ideas</div></div>
+    <div class="stat"><div class="stat-n" id="v-grat">0</div><div class="stat-l">Gratitude</div></div>
+  </div>
+  <div class="filt-row">
+    <button class="filt active" data-f="all" onclick="setFilt(this)">All</button>
+    <button class="filt" data-f="positive" onclick="setFilt(this)">Positive</button>
+    <button class="filt" data-f="idea" onclick="setFilt(this)">Ideas</button>
+    <button class="filt" data-f="goal" onclick="setFilt(this)">Goals</button>
+    <button class="filt" data-f="gratitude" onclick="setFilt(this)">Gratitude</button>
+  </div>
+  <div id="vault-list"></div>
+  <div class="row" style="margin-top:7px">
+    <button class="btn-s" onclick="exportCSV()"><i class="ti ti-download" aria-hidden="true"></i> Export CSV</button>
+    <button class="btn-s" onclick="clearAll()" style="color:#E24B4A;border-color:#E24B4A"><i class="ti ti-trash" aria-hidden="true"></i> Clear all</button>
+  </div>
+</div>
+
+<!-- GOALS PAGE -->
+<div id="pg-goals" class="pg">
+  <div class="card">
+    <div class="sh" style="margin-bottom:10px"><i class="ti ti-plus" aria-hidden="true"></i> New goal</div>
+    <input type="text" id="g-title" placeholder="My goal...">
+    <input type="text" id="g-why" placeholder="Why this matters to me...">
+    <div class="row" style="margin-bottom:7px;gap:6px">
+      <select id="g-cat"><option value="mind">Mindset</option><option value="health">Health</option><option value="career">Career</option><option value="business">Business</option><option value="relation">Relationships</option><option value="finance">Finance</option></select>
+      <select id="g-tl"><option value="weekly">This week</option><option value="monthly">This month</option><option value="quarterly">3 months</option><option value="yearly">This year</option></select>
+    </div>
+    <input type="text" id="g-steps" placeholder="Action steps (comma separated)">
+    <div class="row" style="margin-top:4px">
+      <button class="btn-p" onclick="addGoal()"><i class="ti ti-plus" aria-hidden="true"></i> Add goal</button>
+      <span class="flash" id="g-flash">Saved!</span>
+    </div>
+  </div>
+  <div id="goals-list"></div>
+</div>
+
+<!-- AMPLIFY PAGE -->
+<div id="pg-amplify" class="pg">
+  <div class="aff">Your thoughts are seeds. Let AI water them into forests of possibility.</div>
+  <div class="sh"><i class="ti ti-sparkles" aria-hidden="true" style="font-size:17px;color:#534AB7"></i> Amplify a thought</div>
+  <select id="amp-sel" style="width:100%;margin-bottom:8px"><option value="">— pick a saved thought —</option></select>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:5px">Or write fresh:</div>
+  <textarea id="amp-custom" placeholder="Any thought, dream, or idea..." style="margin-bottom:8px"></textarea>
+  <div class="row" style="margin-bottom:8px;gap:6px">
+    <span style="font-size:12px;color:var(--color-text-secondary)">Style:</span>
+    <select id="amp-mode">
+      <option value="positive">Positivity booster</option>
+      <option value="goal">Goal action plan</option>
+      <option value="affirmation">Personal affirmation</option>
+      <option value="islamic">Islamic reflection</option>
+      <option value="motivation">Bold motivation</option>
+      <option value="career">Career growth</option>
+    </select>
+  </div>
+  <button class="btn-p" onclick="amplify()"><i class="ti ti-sparkles" aria-hidden="true"></i> Generate</button>
+  <div id="amp-result" style="display:none;margin-top:.75rem">
+    <div class="sh">Your expansion:</div>
+    <div class="ai-out" id="amp-out"></div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn-xs grn" onclick="saveAmpResult()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Save</button>
+      <button class="btn-xs" onclick="copyAmp()"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+    </div>
+  </div>
+  <div class="sep"></div>
+  <div class="sh"><i class="ti ti-pencil" aria-hidden="true" style="font-size:16px"></i> Quick capture</div>
+  <textarea id="thought-in" placeholder="What is on your mind?"></textarea>
+  <div class="row" style="margin:7px 0">
+    <div class="row" style="gap:5px">
+      <button class="tag-b sel" data-tag="idea" onclick="selTag(this)">Idea</button>
+      <button class="tag-b" data-tag="positive" onclick="selTag(this)">Positive</button>
+      <button class="tag-b" data-tag="goal" onclick="selTag(this)">Goal</button>
+      <button class="tag-b" data-tag="insight" onclick="selTag(this)">Insight</button>
+    </div>
+  </div>
+  <div class="row">
+    <button class="btn-p" onclick="saveThought()"><i class="ti ti-device-floppy" aria-hidden="true"></i> Save to cloud</button>
+    <span class="flash" id="cap-flash">Saved!</span>
+  </div>
+</div>
+</div>
+
+<script>
+let thoughts=[],goals=[],dhikrC={},actionsDone={},customActions=[],expenses=[],planItems=[],prayers={},wordIdx=0,conceptIdx=0,qSrc='quran',qIdx=0,activeTag='idea',activeFilt='all';
+
+const PRAYERS=[
+  {id:'fajr',name:'Fajr',time:'~5:00 AM'},
+  {id:'dhuhr',name:'Dhuhr',time:'~12:30 PM'},
+  {id:'asr',name:'Asr',time:'~3:30 PM'},
+  {id:'maghrib',name:'Maghrib',time:'~6:30 PM'},
+  {id:'isha',name:'Isha',time:'~8:00 PM'}
+];
+
+const DHIKR=[
+  {id:'subhan',arabic:'سُبْحَانَ اللَّهِ',trans:'Subhan Allah',meaning:'Glory be to Allah',target:33,benefit:'Fills the scales of good deeds'},
+  {id:'alhamdu',arabic:'الْحَمْدُ لِلَّهِ',trans:'Alhamdulillah',meaning:'All praise is due to Allah',target:33,benefit:'Heaviest deed on the scales of judgement'},
+  {id:'akbar',arabic:'اللَّهُ أَكْبَرُ',trans:'Allahu Akbar',meaning:'Allah is the Greatest',target:33,benefit:'Together these 3 wipe sins like sea foam'},
+  {id:'lailaha',arabic:'لَا إِلَٰهَ إِلَّا اللَّهُ',trans:'La ilaha illa Allah',meaning:'There is no god but Allah — keeps faith alive',target:100,benefit:'Best dhikr — protection and highest Jannah rank'},
+  {id:'astaghfir',arabic:'أَسْتَغْفِرُ اللَّهَ',trans:'Astaghfirullah',meaning:'I seek forgiveness from Allah — opens rizq',target:100,benefit:'100x daily — Prophet said sins forgiven'},
+  {id:'salawat',arabic:'اللَّهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ',trans:'Allahumma Salli \'ala Muhammad',meaning:'Blessings on the Prophet (PBUH)',target:10,benefit:'10 blessings returned for each salawat'},
+  {id:'hasbun',arabic:'حَسْبُنَا اللَّهُ وَنِعْمَ الْوَكِيلُ',trans:'Hasbunallahu wa ni\'mal wakeel',meaning:'Allah is sufficient for us',target:7,benefit:'Ibrahim (AS) recited this in the fire'},
+  {id:'rabbi',arabic:'رَبِّ اغْفِرْ لِي وَتُبْ عَلَيَّ',trans:'Rabbi ighfir li wa tub \'alayya',meaning:'My Lord forgive me and accept my repentance',target:100,benefit:'Keeps the heart clean — recited by the Prophet 100x/day'},
+  {id:'subhanarab',arabic:'سُبْحَانَ رَبِّيَ الْعَظِيمِ',trans:'Subhana Rabbi al-Adheem',meaning:'Glory be to my Lord the Most Great',target:3,benefit:'Recited in ruku — connects worship to remembrance'},
+  {id:'ayatul',arabic:'اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ',trans:'Ayatul Kursi',meaning:'Allah — there is no deity except Him, the Ever-Living',target:1,benefit:'Recited after salah — only paradise separates you from Allah'},
+];
+
+const WORDS=[
+  {word:'Resilience',pos:'noun',def:'The capacity to recover quickly from difficulties and adapt positively to adversity.',ex:'His resilience as a process engineer — adapting calmly when the plant faced an unexpected shutdown — earned him a promotion.',usage:'Use it when describing the ability to bounce back.'},
+  {word:'Perspicacious',pos:'adjective',def:'Having a ready insight into things; shrewdly perceptive and understanding.',ex:'A perspicacious engineer notices inefficiencies others overlook and proposes solutions before problems escalate.',usage:'Use it to compliment sharp, insightful thinking.'},
+  {word:'Tenacious',pos:'adjective',def:'Holding firm to a purpose or belief; very determined and persistent.',ex:'His tenacious pursuit of optimizing the distillation column resulted in a 15% increase in yield.',usage:'Use when describing strong determination.'},
+  {word:'Prolific',pos:'adjective',def:'Producing many results, ideas, or works; highly fruitful and productive.',ex:'She was a prolific contributor to the team, submitting three improvement proposals every quarter.',usage:'Use to describe high output and productivity.'},
+  {word:'Diligent',pos:'adjective',def:'Having or showing careful and persistent work or effort.',ex:'Diligent record-keeping in a process plant prevents costly mistakes and regulatory violations.',usage:'Use to describe consistent, careful effort.'},
+  {word:'Astute',pos:'adjective',def:'Having or showing an ability to accurately assess situations and turn them to one\'s advantage.',ex:'An astute engineer reads market trends in scrap metal prices before making import decisions.',usage:'Use to describe smart, strategic thinking.'},
+  {word:'Meticulous',pos:'adjective',def:'Showing great attention to detail and very careful and precise.',ex:'Meticulous process documentation is what separates a good engineer from a great one.',usage:'Use when precision and attention to detail matter.'},
+  {word:'Candor',pos:'noun',def:'The quality of being open and honest in expression; frankness.',ex:'He spoke with candor during the performance review, clearly stating his goal of reaching 12,000 AED.',usage:'Use when describing honest, direct communication.'},
+  {word:'Efficacious',pos:'adjective',def:'Successful in producing a desired or intended result; effective.',ex:'The new heat exchanger design proved efficacious, reducing energy consumption by 20%.',usage:'Use it as a stronger, more formal version of "effective".'},
+  {word:'Forthright',pos:'adjective',def:'Direct and outspoken; strong and clear in expression.',ex:'Being forthright with your manager about career goals is the fastest path to a salary increase.',usage:'Use to describe clear, direct, honest communication.'},
+  {word:'Adept',pos:'adjective',def:'Very skilled or proficient at something.',ex:'She became adept at process simulation software, which significantly boosted her value to the company.',usage:'Use to describe high skill in a specific area.'},
+  {word:'Sagacious',pos:'adjective',def:'Having or showing keen mental discernment and good judgment; wise.',ex:'The sagacious business decision to enter scrap metal trading in the UAE came from careful market analysis.',usage:'Use when describing wise, far-sighted decisions.'},
+  {word:'Indefatigable',pos:'adjective',def:'Persisting tirelessly, never giving in to fatigue.',ex:'His indefatigable commitment to learning one new engineering concept each day set him apart from peers.',usage:'Use to describe tireless, relentless effort.'},
+  {word:'Veracity',pos:'noun',def:'Conformity to facts; accuracy and habitual observance of truth.',ex:'The veracity of your process data determines the reliability of every engineering decision downstream.',usage:'Use when discussing truth, accuracy, and trustworthiness.'},
+  {word:'Acumen',pos:'noun',def:'The ability to make good judgments and take quick, decisive action.',ex:'His business acumen helped him identify scrap metal arbitrage opportunities between India and the UAE.',usage:'Use to praise sharp business or practical intelligence.'},
+  {word:'Eloquent',pos:'adjective',def:'Fluent, persuasive, and well-expressed in speech or writing.',ex:'An eloquent engineer who can explain technical processes clearly to management gets heard — and promoted.',usage:'Use when describing powerful, clear communication.'},
+  {word:'Pragmatic',pos:'adjective',def:'Dealing with things sensibly and realistically based on practical considerations.',ex:'A pragmatic approach to the business plan: start small with one scrap metal category, prove the model, then scale.',usage:'Use to describe practical, realistic decision-making.'},
+  {word:'Fortitude',pos:'noun',def:'Courage and determination in the face of adversity.',ex:'Building a business while working full-time and getting married requires immense fortitude.',usage:'Use to describe inner strength in difficult times.'},
+  {word:'Luminous',pos:'adjective',def:'Full of light, brilliant; also used to describe clarity of thought or expression.',ex:'Her luminous presentation of the plant upgrade plan left the management team fully convinced.',usage:'Use to describe brilliance, clarity, and inspiration.'},
+  {word:'Steadfast',pos:'adjective',def:'Resolutely or dutifully firm and unwavering in purpose or loyalty.',ex:'Remain steadfast in your dhikr, your engineering studies, and your business vision — results will come.',usage:'Use to describe loyalty and consistency.'},
+];
+
+const CONCEPTS=[
+  {name:'Mass Balance',cat:'Fundamentals',def:'Mass cannot be created or destroyed in a chemical process. The total mass entering a system must equal the total mass leaving plus any accumulation inside the system.',formula:'Σm_in = Σm_out + Δm_system',example:'In a UAE refinery, if 1,000 kg/h of crude enters a distillation column, the sum of all product streams (naphtha, kerosene, diesel, residue) must equal 1,000 kg/h at steady state.'},
+  {name:'Energy Balance',cat:'Fundamentals',def:'The first law of thermodynamics applied to process systems. Energy input equals energy output plus stored energy. Used to design heat exchangers, reactors, and separators.',formula:'Q - W = ΔH + ΔKE + ΔPE',example:'Calculating the steam requirement for a process heater: if feed enters at 20°C and must exit at 120°C, the energy balance gives you the exact steam flow needed.'},
+  {name:'P&ID (Piping & Instrumentation Diagram)',cat:'Engineering Docs',def:'A detailed diagram showing all equipment, piping, instrumentation, and control systems. It is the master reference document for a process plant. Every engineer must read it fluently.',formula:'Standard symbols per ISA-5.1 and ISO 10628',example:'Before any modification in a UAE petrochemical plant, the P&ID is reviewed to understand how a change in one line affects temperature, pressure, and safety systems downstream.'},
+  {name:'Bernoulli\'s Equation',cat:'Fluid Mechanics',def:'Describes energy conservation in a flowing fluid. Pressure energy + kinetic energy + potential energy = constant. Foundation of pump and pipe system design.',formula:'P/ρg + v²/2g + z = constant',example:'Used to size process pumps in a UAE desalination plant — if fluid velocity increases through a narrower pipe, pressure drops proportionally.'},
+  {name:'Heat Transfer — Fourier\'s Law',cat:'Heat Transfer',def:'The rate of heat conduction is proportional to the temperature gradient and the thermal conductivity of the material. Used to design insulation, heat exchangers, and furnaces.',formula:'Q = -kA(dT/dx)',example:'Designing pipe insulation in an outdoor UAE process plant — high ambient temperatures mean careful calculation of heat gain into cold process lines.'},
+  {name:'HAZOP (Hazard and Operability Study)',cat:'Safety',def:'A systematic risk assessment technique. A team examines every process node using guide words (MORE, LESS, NO, REVERSE) to identify deviations and their consequences.',formula:'Guide words: More | Less | None | Reverse | Other Than | Early | Late',example:'During HAZOP for a new reactor in a UAE plant, "MORE pressure" deviation reveals the safety relief valve is undersized — preventing a potential catastrophic failure.'},
+  {name:'Control Loop — PID Controller',cat:'Process Control',def:'A feedback mechanism that automatically adjusts a process variable (temperature, pressure, flow, level) using three terms: Proportional, Integral, and Derivative.',formula:'Output = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt',example:'A PID controller maintains a reactor temperature at exactly 85°C by adjusting cooling water flow — if temperature rises (error e), it immediately opens the cooling valve more.'},
+  {name:'Distillation Principles',cat:'Separation',def:'Separation of mixtures based on differences in volatility. Lighter (more volatile) components rise to the top of the column as vapor; heavier components fall as liquid. Used extensively in oil and gas.',formula:'Relative volatility α = (y_A/x_A) / (y_B/x_B)',example:'In an Abu Dhabi refinery distillation column, crude oil is separated into LPG (top), naphtha, kerosene, diesel, and atmospheric residue (bottom) based on boiling points.'},
+  {name:'Pump Sizing — NPSH',cat:'Fluid Mechanics',def:'Net Positive Suction Head (NPSH) is the minimum pressure needed at the pump inlet to prevent cavitation (vapor bubble collapse that destroys impellers). Critical for pump selection.',formula:'NPSHa = (Ps - Pvapor)/ρg + Vs²/2g - h_friction',example:'In a process plant, if NPSHa < NPSHr, the pump will cavitate — leading to vibration, noise, damage, and eventual failure. Always ensure NPSHa > NPSHr by at least 0.5-1 m.'},
+  {name:'Reaction Kinetics',cat:'Reaction Engineering',def:'The study of rates of chemical reactions and how they depend on concentration, temperature, and catalysts. Determines reactor size, yield, and selectivity.',formula:'r = k·[A]^m·[B]^n  |  k = A·e^(-Ea/RT)',example:'For a UAE petrochemical plant, knowing the reaction rate at 200°C vs 250°C (using Arrhenius equation) determines whether a larger, cheaper reactor at low temp is better than a smaller one at high temp.'},
+  {name:'Pressure Drop — Darcy-Weisbach',cat:'Fluid Mechanics',def:'Calculates friction pressure loss in pipes. Essential for sizing pipes, pumps, and compressors. High pressure drops mean high energy costs and undersized equipment.',formula:'ΔP = f·(L/D)·(ρv²/2)',example:'In a long pipeline from an Abu Dhabi plant to a storage terminal, high velocity causes significant pressure drop — Darcy-Weisbach tells you how much pump power is needed to overcome it.'},
+  {name:'SIL — Safety Integrity Level',cat:'Safety',def:'A measure of risk reduction provided by a safety function. SIL 1-4 represents increasing reliability requirements. SIL 3-4 is required for high-hazard systems in UAE plants per IEC 61511.',formula:'SIL 1: PFD 0.01-0.1 | SIL 2: 0.001-0.01 | SIL 3: 0.0001-0.001',example:'An emergency shutdown (ESD) system protecting a high-pressure gas line in a UAE plant is typically SIL 2 or SIL 3, meaning it must fail only 1 in 10,000 demands or better.'},
+  {name:'Scrap Metal Process — Value Chain',cat:'Business Relevance',def:'For your import/export business: Understanding material grades (HMS 1&2, shredded scrap, copper, aluminum) and their processing requirements connects your engineering skills directly to trading value.',formula:'Margin = (Selling price/MT) - (Purchase + Shipping + Customs + Processing)',example:'HMS 1 (Heavy Melting Scrap) from India to UAE: buy at $280/MT in India, shipping $40/MT, UAE customs duty, sell to local steel mills at $340/MT. Your process engineering knowledge helps you assess quality.'},
+];
+
+const QUOTES={
+  quran:[
+    {arabic:'إِنَّ مَعَ الْعُسْرِ يُسْرًا',text:'Indeed, with hardship comes ease.',ref:'Quran 94:6',auth:'Surah Ash-Sharh'},
+    {arabic:'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ',text:'Whoever relies upon Allah — then He is sufficient for him.',ref:'Quran 65:3',auth:'Surah At-Talaq'},
+    {arabic:'إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ',text:'Allah will not change the condition of a people until they change what is in themselves.',ref:'Quran 13:11',auth:'Surah Ar-Ra\'d'},
+    {arabic:'وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ',text:'Do not weaken and do not grieve — you will be superior if you are true believers.',ref:'Quran 3:139',auth:'Surah Ali Imran'},
+    {arabic:'وَعَسَىٰ أَن تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَّكُمْ',text:'It may be that you dislike something while it is good for you.',ref:'Quran 2:216',auth:'Surah Al-Baqarah'},
+    {arabic:'رَبِّ زِدْنِي عِلْمًا',text:'My Lord, increase me in knowledge.',ref:'Quran 20:114',auth:'Surah Ta-Ha'},
+    {arabic:'وَاللَّهُ يُحِبُّ الصَّابِرِينَ',text:'And Allah loves the patient.',ref:'Quran 3:146',auth:'Surah Ali Imran'},
+    {arabic:'فَاذْكُرُونِي أَذْكُرْكُمْ',text:'Remember Me, and I will remember you.',ref:'Quran 2:152',auth:'Surah Al-Baqarah'},
+    {arabic:'وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ',text:'And He is with you wherever you are.',ref:'Quran 57:4',auth:'Surah Al-Hadid'},
+    {arabic:'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا',text:'For indeed with every difficulty comes ease.',ref:'Quran 94:5',auth:'Surah Ash-Sharh'},
+    {arabic:'وَبَشِّرِ الصَّابِرِينَ',text:'Give glad tidings to the patient.',ref:'Quran 2:155',auth:'Surah Al-Baqarah'},
+    {arabic:'اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ',text:'Allah is the light of the heavens and the earth.',ref:'Quran 24:35',auth:'Surah An-Nur'},
+    {arabic:'وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ',text:'When My servants ask about Me — I am near.',ref:'Quran 2:186',auth:'Surah Al-Baqarah'},
+    {arabic:'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',text:'Indeed, Allah is with the patient.',ref:'Quran 2:153',auth:'Surah Al-Baqarah'},
+    {arabic:'وَشَاوِرْهُمْ فِي الْأَمْرِ',text:'And consult them in the matter.',ref:'Quran 3:159',auth:'Surah Ali Imran'},
+  ],
+  prophet:[
+    {arabic:'',text:'The strongest among you is the one who controls his anger.',ref:'Sahih Bukhari',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'Tie your camel, then put your trust in Allah.',ref:'Tirmidhi',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'The best of people are those most beneficial to people.',ref:'Al-Mu\'jam al-Awsat',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'Take benefit of five before five: your youth, your health, your wealth, your free time, and your life.',ref:'Shu\'ab al-Iman',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'Seek knowledge even if it is in China.',ref:'Bayhaqi',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'The best of deeds are those done consistently, even if small.',ref:'Sahih Bukhari',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'Actions are by intentions. Every person will get what they intended.',ref:'Sahih Bukhari',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'A believer is never stung twice from the same hole.',ref:'Sahih Bukhari',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'Allah does not burden a soul beyond that it can bear.',ref:'Quran 2:286',auth:'Allah, revealed to Prophet (PBUH)'},
+    {arabic:'',text:'Whoever treads a path seeking knowledge, Allah makes his path to Jannah easy.',ref:'Sahih Muslim',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'Make things easy, do not make them hard. Give glad tidings, do not repel people.',ref:'Sahih Bukhari',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'Sadaqah does not decrease wealth.',ref:'Sahih Muslim',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'The hand that gives is better than the hand that receives.',ref:'Sahih Bukhari',auth:'Prophet Muhammad (PBUH)'},
+    {arabic:'',text:'None of you truly believes until he loves for his brother what he loves for himself.',ref:'Sahih Bukhari',auth:'Prophet Muhammad (PBUH)'},
+  ],
+  elon:[
+    {arabic:'',text:'When something is important enough, you do it even if the odds are not in your favor.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'Failure is an option here. If things are not failing, you are not innovating enough.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'It is possible for ordinary people to choose to be extraordinary.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'Persistence is very important. You should not give up unless you are forced to give up.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'If you get up in the morning and think the future is going to be better, it is a bright day.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'The first step is to establish that something is possible — then probability will occur.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'Do not be afraid of new arenas. That is where all the opportunity is.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'Work like hell. Put in 80 to 100 hour weeks. You will achieve in 4 months what takes others a year.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'I think it is possible for ordinary people to choose to be extraordinary.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'Starting and growing a business is as hard as it gets. You have to have a high pain threshold.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'Constantly think about how you could be doing things better and question yourself.',ref:'',auth:'Elon Musk'},
+    {arabic:'',text:'You want to have a future where you are expecting things to be better, not one where you are expecting things to be worse.',ref:'',auth:'Elon Musk'},
+  ],
+  wisdom:[
+    {arabic:'',text:'The mind is everything. What you think, you become.',ref:'',auth:'Buddha'},
+    {arabic:'',text:'In the middle of every difficulty lies opportunity.',ref:'',auth:'Albert Einstein'},
+    {arabic:'',text:'Believe you can and you are halfway there.',ref:'',auth:'Theodore Roosevelt'},
+    {arabic:'',text:'It always seems impossible until it is done.',ref:'',auth:'Nelson Mandela'},
+    {arabic:'',text:'What lies behind us and lies before us are tiny matters compared to what lies within us.',ref:'',auth:'Ralph Waldo Emerson'},
+    {arabic:'',text:'Your only limit is your mind.',ref:'',auth:'Anonymous'},
+    {arabic:'',text:'The future belongs to those who believe in the beauty of their dreams.',ref:'',auth:'Eleanor Roosevelt'},
+    {arabic:'',text:'Success is not final, failure is not fatal — it is the courage to continue that counts.',ref:'',auth:'Winston Churchill'},
+    {arabic:'',text:'Discipline is the bridge between goals and accomplishment.',ref:'',auth:'Jim Rohn'},
+    {arabic:'',text:'Your life does not get better by chance, it gets better by change.',ref:'',auth:'Jim Rohn'},
+    {arabic:'',text:'The secret of getting ahead is getting started.',ref:'',auth:'Mark Twain'},
+    {arabic:'',text:'Do not watch the clock. Do what it does. Keep going.',ref:'',auth:'Sam Levenson'},
+  ],
+  engineers:[
+    {arabic:'',text:'Engineers like to solve problems. If there are no problems available, they will create their own problems.',ref:'',auth:'Scott Adams'},
+    {arabic:'',text:'Engineering is not only the study of 45 subjects but it is moral orientation of a character.',ref:'',auth:'Pramod Rathor'},
+    {arabic:'',text:'To design is to communicate clearly by whatever means you can control or master.',ref:'',auth:'Milton Glaser'},
+    {arabic:'',text:'The human foot is a masterpiece of engineering and a work of art.',ref:'',auth:'Leonardo da Vinci'},
+    {arabic:'',text:'The way to succeed is to double your error rate.',ref:'',auth:'Thomas J. Watson'},
+    {arabic:'',text:'Simplicity is the ultimate sophistication.',ref:'',auth:'Leonardo da Vinci'},
+    {arabic:'',text:'Plans are worthless, but planning is everything.',ref:'',auth:'Dwight D. Eisenhower'},
+    {arabic:'',text:'The best investment you can make is in yourself.',ref:'',auth:'Warren Buffett'},
+    {arabic:'',text:'It is not the strongest of the species that survive, nor the most intelligent, but the one most responsive to change.',ref:'',auth:'Charles Darwin'},
+    {arabic:'',text:'Safety is not an intellectual exercise to keep us in work. It is a matter of life and death.',ref:'',auth:'Brian Turner, Safety Engineer'},
+  ]
+};
+
+const GRAT_PROMPTS=[
+  'What is one blessing from Allah you are most grateful for today?',
+  'Name 3 small moments that brought you peace this week.',
+  'What challenge secretly made you stronger this month?',
+  'Who made your life easier recently — have you thanked them?',
+  'What progress in your career, however small, can you celebrate?',
+  'What are you grateful for about your upcoming wedding on July 19?',
+  'What gift of health, mind, or faith are you thankful for?',
+  'What opportunity in UAE are you grateful to have access to?',
+];
+
+const CAREER_PLAN=[
+  {id:'c1',text:'Master at least one P&ID reading and HAZOP participation per month',priority:'high'},
+  {id:'c2',text:'Learn one new software tool (Aspen, HYSYS, or AutoCAD P&ID) this quarter',priority:'high'},
+  {id:'c3',text:'Ask manager for a performance review and discuss salary progression to 12,000 AED',priority:'high'},
+  {id:'c4',text:'Complete at least one process improvement proposal with cost savings quantified',priority:'high'},
+  {id:'c5',text:'Build a reputation as the "go-to" person for troubleshooting — document every solution',priority:'med'},
+  {id:'c6',text:'Obtain a relevant certification (Lean Six Sigma, NEBOSH, or PSM)',priority:'med'},
+  {id:'c7',text:'Network with senior engineers and attend one industry event in Abu Dhabi this year',priority:'med'},
+  {id:'c8',text:'Create a personal development plan with clear KPIs to show management',priority:'high'},
+];
+
+const BIZ_PLAN=[
+  {id:'b1',text:'Research UAE Customs duty rates and regulations for scrap metal imports (HS code 7204)',priority:'high'},
+  {id:'b2',text:'Register trade license with Abu Dhabi Department of Economic Development (DED)',priority:'high'},
+  {id:'b3',text:'Identify 3 reliable scrap suppliers in India or home country with competitive HMS 1&2 pricing',priority:'high'},
+  {id:'b4',text:'Connect with UAE steel mills (Emirates Steel, Conare) and establish buyer relationships',priority:'high'},
+  {id:'b5',text:'Open a business bank account and set up basic accounting system',priority:'high'},
+  {id:'b6',text:'Start small: pilot one container shipment (20 MT) to test the process end-to-end',priority:'high'},
+  {id:'b7',text:'Study LME (London Metal Exchange) prices daily for 30 days to understand market cycles',priority:'med'},
+  {id:'b8',text:'Build a simple spreadsheet model: purchase price + freight + customs + margin = minimum sell price',priority:'high'},
+  {id:'b9',text:'Join UAE scrap metal trader associations and WhatsApp groups for market intelligence',priority:'med'},
+  {id:'b10',text:'Discuss with father: roles, responsibilities, and capital contribution structure',priority:'high'},
+];
+
+const WEDDING_PLAN=[
+  {id:'w1',text:'Confirm venue booking and finalize guest count before July 1',priority:'high'},
+  {id:'w2',text:'Complete mahr (dowry) discussions and documentation',priority:'high'},
+  {id:'w3',text:'Finalize catering menu and confirm headcount to caterer',priority:'high'},
+  {id:'w4',text:'Arrange accommodation for out-of-town family members',priority:'high'},
+  {id:'w5',text:'Purchase wedding attire (sherwani/suit) and bride\'s dress by July 5',priority:'high'},
+  {id:'w6',text:'Arrange transportation for wedding day — cars and logistics',priority:'med'},
+  {id:'w7',text:'Book photographer and/or videographer',priority:'high'},
+  {id:'w8',text:'Send invitations to all guests — confirm by July 10',priority:'high'},
+  {id:'w9',text:'Set a wedding budget and track all expenses separately',priority:'high'},
+  {id:'w10',text:'Plan honeymoon or post-wedding trip dates',priority:'med'},
+  {id:'w11',text:'Prepare emotionally — talk with your future spouse about your life goals together',priority:'high'},
+  {id:'w12',text:'Read 2 Rakat Salah on wedding night and make dua for a blessed marriage',priority:'high'},
+];
+
+const DAILY_ACTIONS=[
+  {id:'fajr-act',icon:'ti-building-mosque',color:'#EEEDFE',ic:'#534AB7',title:'Pray all 5 salah on time today',why:'Salah is the pillar of deen. The Prophet (PBUH) said it is the first thing questioned on Judgment Day. On-time salah builds the discipline and gratitude that make everything else work.',impact:'high',cat:'spirit'},
+  {id:'quran-act',icon:'ti-book',color:'#EAF3DE',ic:'#3B6D11',title:'Read 5 verses of Quran with meaning',why:'Even one verse read with reflection transforms your thinking. The Quran is a living guide — it speaks directly to your career anxiety, business fears, and marriage hopes.',impact:'high',cat:'spirit'},
+  {id:'journal-act',icon:'ti-pencil',color:'#E6F1FB',ic:'#185FA5',title:'Capture 3 thoughts in your Vault',why:'Writing clarifies thinking. Jobs, Musk, Buffett all journalled. Your explosion of ideas is gold — capture it before it disappears.',impact:'high',cat:'mind'},
+  {id:'learn-eng',icon:'ti-settings-2',color:'#EAF3DE',ic:'#27500A',title:'Study today\'s engineering concept for 15 min',why:'One concept per day = 365 concepts per year. In 3 years you will know more than most 10-year engineers. This is your fastest path to 12,000+ AED.',impact:'high',cat:'career'},
+  {id:'learn-word',icon:'ti-vocabulary',color:'#EEEDFE',ic:'#3C3489',title:'Use today\'s Word of the Day in a sentence',why:'Vocabulary is the #1 predictor of career advancement. Great English elevates your emails, meetings, and proposals — making you sound like a leader.',impact:'high',cat:'mind'},
+  {id:'plan-day',icon:'ti-list-check',color:'#EEEDFE',ic:'#3C3489',title:'Write your top 3 priorities for today',why:'Most people react to their day. Leaders design it. 3 clear priorities every morning multiplies your output by 3x and prevents the feeling of being busy but achieving nothing.',impact:'high',cat:'mind'},
+  {id:'biz-research',icon:'ti-truck',color:'#FAEEDA',ic:'#854F0B',title:'Spend 20 min on your scrap metal business research',why:'One insight per day about UAE customs, scrap grades, or buyer contacts builds a massive edge over 6 months. Your future business is built in the margins of today.',impact:'high',cat:'business'},
+  {id:'wedding-task',icon:'ti-heart',color:'#FBEAF0',ic:'#993556',title:'Complete one wedding planning task (July 19!)',why:'Your wedding is 26 days away. Each task done now reduces stress and honors your future spouse. A calm wedding starts with a prepared groom.',impact:'high',cat:'wedding'},
+  {id:'move-act',icon:'ti-run',color:'#EAF3DE',ic:'#27500A',title:'Move your body for 30 minutes',why:'Exercise grows new brain cells (BDNF), cuts anxiety, and gives you energy for evening study. Health is your most valuable asset — protect it.',impact:'high',cat:'health'},
+  {id:'sadaqah-act',icon:'ti-coin',color:'#FAEEDA',ic:'#633806',title:'Give sadaqah today — even a small amount',why:'"Sadaqah does not decrease wealth." Every dirham given multiplies barakah. Generosity is a habit — start small, build the muscle.',impact:'high',cat:'spirit'},
+  {id:'sleep-act',icon:'ti-moon-stars',color:'#EEEDFE',ic:'#534AB7',title:'Sleep before midnight — protect your brain',why:'Deep sleep cleans your brain, consolidates learning, and resets emotion regulation. Chronic sleep deprivation is the single biggest hidden tax on your performance.',impact:'high',cat:'health'},
+];
+
+function setCloud(s,m){
+  const c={ok:'#97C459',saving:'#EF9F27',error:'#E24B4A'};
+  ['cdot','cdot2'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.background=c[s];});
+  ['clbl','clbl2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=m;});
+}
+
+async function saveCloud(){
+  setCloud('saving','Saving...');
+  try{
+    const keys={
+      'pos-thoughts':thoughts,'pos-goals':goals,'pos-dhikr':dhikrC,
+      'pos-actions':actionsDone,'pos-custom-actions':customActions,
+      'pos-expenses':expenses,'pos-plan-items':planItems,'pos-prayers':prayers
+    };
+    for(const[k,v] of Object.entries(keys))await window.storage.set(k,JSON.stringify(v));
+    setCloud('ok','All saved to cloud');
+  }catch(e){setCloud('error','Save failed');}
+}
+
+async function loadCloud(){
+  setCloud('saving','Loading...');
+  try{
+    const load=async(k,d)=>{try{const r=await window.storage.get(k);return r&&r.value?JSON.parse(r.value):d;}catch{return d;}};
+    thoughts=await load('pos-thoughts',[]);
+    goals=await load('pos-goals',[]);
+    dhikrC=await load('pos-dhikr',{});
+    actionsDone=await load('pos-actions',{});
+    customActions=await load('pos-custom-actions',[]);
+    expenses=await load('pos-expenses',[]);
+    planItems=await load('pos-plan-items',{});
+    prayers=await load('pos-prayers',{});
+    setCloud('ok',`Loaded — ${thoughts.length} thoughts, ${goals.length} goals`);
+    updateStats();
+  }catch(e){setCloud('error','Load failed');}
+}
+
+function go(name,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pg-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='vault')renderVault();
+  if(name==='goals')renderGoals();
+  if(name==='amplify'){populateAmpSel();}
+  if(name==='dhikr')renderDhikr();
+  if(name==='actions')renderActions();
+  if(name==='expenses')renderExpenses();
+  if(name==='plan')renderPlan();
+  if(name==='learn'){showWord();showConcept();}
+  if(name==='home')updateStats();
+}
+
+function switchQ(src,btn){
+  document.querySelectorAll('.qtab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');qSrc=src;qIdx=0;showQ();
+}
+function showQ(){
+  const list=QUOTES[qSrc];const q=list[qIdx%list.length];
+  const ar=document.getElementById('q-arabic');
+  ar.textContent=q.arabic||'';ar.style.display=q.arabic?'block':'none';
+  document.getElementById('q-text').textContent='\u201c'+q.text+'\u201d';
+  document.getElementById('q-ref').textContent=q.ref||'';
+  document.getElementById('q-auth').textContent=q.auth?'\u2014 '+q.auth:'';
+}
+function nextQ(){qIdx++;showQ();}
+
+function renderPrayers(){
+  const todayKey=new Date().toDateString();
+  const pg=document.getElementById('prayer-grid');
+  if(!pg)return;
+  pg.innerHTML=PRAYERS.map(p=>{
+    const done=(prayers[todayKey]||{})[p.id];
+    return `<button class="prayer-btn ${done?'done':''}" onclick="togglePrayer('${p.id}')" aria-label="${p.name} prayer ${done?'done':'not done'}">
+      <i class="ti ${done?'ti-circle-check':'ti-circle'} prayer-tick" aria-hidden="true"></i>
+      <div class="prayer-name">${p.name}</div>
+      <div class="prayer-time">${p.time}</div>
+    </button>`;
+  }).join('');
+  const cnt=Object.values((prayers[todayKey]||{})).filter(Boolean).length;
+  const msg=document.getElementById('prayer-msg');
+  if(msg){
+    const msgs=['','Alhamdulillah — 1 prayer done. Keep going!','MashaAllah — halfway there! 3 more to go.','SubhanAllah — so close! 2 more prayers.','Excellent! One more prayer to complete your day!','MashaAllah! All 5 prayers complete today! Allah is pleased with you.'];
+    msg.textContent=cnt>0?msgs[Math.min(cnt,5)]:'';
+  }
+  document.getElementById('s-prayers').textContent=cnt+'/5';
+}
+
+async function togglePrayer(id){
+  const todayKey=new Date().toDateString();
+  if(!prayers[todayKey])prayers[todayKey]={};
+  prayers[todayKey][id]=!prayers[todayKey][id];
+  renderPrayers();updateStats();await saveCloud();
+}
+
+function setMood(btn){
+  document.querySelectorAll('.mood-btn').forEach(b=>{b.classList.remove('sel','amazing','good','okay','low');});
+  btn.classList.add('sel',btn.dataset.m);
+  const r={amazing:'SubhanAllah! You are in your power zone. Use this energy on your most important task — engineering study, business plan, or wedding prep. Alhamdulillah for this gift!',good:'Alhamdulillah for a good day! Consistency on good days is what builds great lives. Stay focused on your 3 priorities.',okay:'Okay is perfectly okay. "With hardship comes ease" (94:6). Do your dhikr, complete your prayers, and take one small productive step forward.',low:'It takes courage to show up feeling low. Remember — Allah is near. Make your dhikr, drink water, take a short walk, and know that ease is coming.'};
+  const box=document.getElementById('mood-box');box.textContent=r[btn.dataset.m];box.style.display='block';
+}
+
+async function saveGrat(){
+  const txt=document.getElementById('grat-in').value.trim();if(!txt)return;
+  thoughts.unshift({id:Date.now(),text:txt,tag:'gratitude',context:'morning',energy:'calm',time:new Date().toLocaleString(),expanded:null});
+  document.getElementById('grat-in').value='';
+  flash('grat-flash');updateStats();await saveCloud();
+}
+
+function flash(id){const e=document.getElementById(id);e.style.display='inline-block';setTimeout(()=>e.style.display='none',2500);}
+
+function updateStats(){
+  const todayKey=new Date().toDateString();
+  const pCnt=Object.values((prayers[todayKey]||{})).filter(Boolean).length;
+  const dCnt=DHIKR.filter(d=>(dhikrC[d.id]||0)>=d.target).length;
+  const actCnt=Object.values(actionsDone).filter(Boolean).length;
+  document.getElementById('s-thoughts').textContent=thoughts.length;
+  document.getElementById('s-prayers').textContent=pCnt+'/5';
+  document.getElementById('s-dhikr').textContent=dCnt+'/'+DHIKR.length;
+  document.getElementById('s-goals').textContent=goals.length;
+  const tot=DHIKR.length+DAILY_ACTIONS.length+customActions.length+5;
+  const done=dCnt+actCnt+pCnt;
+  const pct=tot?Math.round((done/tot)*100):0;
+  const tb=document.getElementById('today-txt');
+  if(tb)tb.textContent=`Today: ${pct}% complete — ${pCnt}/5 prayers, ${dCnt}/${DHIKR.length} dhikr, ${actCnt} actions done`;
+  const streak=Math.min(thoughts.length+pCnt,7);
+  renderStreak(streak);
+}
+
+function renderStreak(n){
+  const days=['M','T','W','T','F','S','S'];
+  const bar=document.getElementById('streak-bar');if(!bar)return;
+  bar.innerHTML=days.map((d,i)=>`<div class="sday ${i<n?'done':''}">${d}</div>`).join('');
+  const lbl=document.getElementById('streak-lbl');
+  if(lbl)lbl.textContent=n>0?`${n}-day active streak — MashaAllah!`:'Start your streak today!';
+}
+
+function renderDhikr(){
+  const list=document.getElementById('dhikr-list');
+  list.innerHTML=DHIKR.map(d=>{
+    const cnt=dhikrC[d.id]||0;const done=cnt>=d.target;
+    const pct=Math.min(100,Math.round((cnt/d.target)*100));
+    return `<div class="dhikr-card" id="dc-${d.id}">
+      <div class="d-arabic">${d.arabic}</div>
+      <div class="d-trans">${d.trans}</div>
+      <div class="d-meaning">${d.meaning}</div>
+      <div class="d-benefit">${d.benefit}</div>
+      <div class="d-row">
+        ${done?`<span class="done-badge">Done! ${d.target}/${d.target}</span>`:`
+        <button class="cnt-btn" onclick="countD('${d.id}',${d.target})" aria-label="Count ${d.trans}"><i class="ti ti-plus" aria-hidden="true" style="font-size:16px"></i></button>
+        <span class="d-cnt" id="cnt-${d.id}">${cnt}</span>
+        <div class="d-prog"><div class="d-pfill" id="pf-${d.id}" style="width:${pct}%"></div></div>
+        <span class="d-target">/${d.target}</span>
+        <button class="cnt-btn" style="background:#534AB7;color:white;border-color:#534AB7" onclick="markD('${d.id}',${d.target})" aria-label="Mark done" title="Mark complete"><i class="ti ti-check" aria-hidden="true" style="font-size:14px"></i></button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function countD(id,target){
+  if(!dhikrC[id])dhikrC[id]=0;
+  if(dhikrC[id]>=target)return;
+  dhikrC[id]++;
+  const cnt=dhikrC[id];
+  const el=document.getElementById('cnt-'+id);const pf=document.getElementById('pf-'+id);
+  if(el)el.textContent=cnt;if(pf)pf.style.width=Math.min(100,Math.round((cnt/target)*100))+'%';
+  if(cnt>=target)renderDhikr();
+  updateStats();
+  if(cnt%10===0||cnt>=target)await saveCloud();
+}
+async function markD(id,target){dhikrC[id]=target;renderDhikr();updateStats();await saveCloud();}
+async function resetDhikr(){if(!confirm('Reset all dhikr counts?'))return;dhikrC={};renderDhikr();updateStats();await saveCloud();}
+
+function showWord(){
+  const w=WORDS[wordIdx%WORDS.length];
+  const wc=document.getElementById('word-card');
+  wc.innerHTML=`<div class="word-main">${w.word}</div>
+    <div class="word-pos">${w.pos}</div>
+    <div class="word-def">${w.def}</div>
+    <div class="word-ex">"${w.ex}"</div>
+    <div style="font-size:11px;color:#534AB7;margin-top:4px"><i class="ti ti-bulb" aria-hidden="true"></i> Usage: ${w.usage}</div>`;
+}
+function nextWord(){wordIdx++;showWord();}
+
+function showConcept(){
+  const c=CONCEPTS[conceptIdx%CONCEPTS.length];
+  const ec=document.getElementById('eng-card');
+  ec.innerHTML=`<div class="eng-concept">${c.name}</div>
+    <div class="eng-cat">${c.cat}</div>
+    <div class="eng-def">${c.def}</div>
+    <div class="eng-formula">${c.formula}</div>
+    <div class="eng-example"><i class="ti ti-map-pin" aria-hidden="true"></i> Real example: ${c.example}</div>`;
+}
+function nextConcept(){conceptIdx++;showConcept();}
+
+function renderPlan(){
+  const todayPlanItems=planItems||{};
+  const renderSection=(items,defaultItems,catId)=>{
+    const allItems=[...defaultItems,...(Array.isArray(customActions)?[]:[])];
+    return defaultItems.map(item=>{
+      const done=(todayPlanItems[item.id])||false;
+      const priColor=item.priority==='high'?'ba':'bp';
+      return `<div class="plan-item">
+        <input type="checkbox" class="plan-cb" id="pi-${item.id}" ${done?'checked':''} onchange="togglePlan('${item.id}',this)">
+        <label for="pi-${item.id}" class="plan-text ${done?'done':''}">${esc(item.text)}</label>
+        <span class="plan-tag badge ${priColor}">${item.priority}</span>
+      </div>`;
+    }).join('');
+  };
+  const careerDone=CAREER_PLAN.filter(i=>planItems[i.id]).length;
+  const bizDone=BIZ_PLAN.filter(i=>planItems[i.id]).length;
+  const wedDone=WEDDING_PLAN.filter(i=>planItems[i.id]).length;
+  document.getElementById('career-plan').innerHTML=`<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">${careerDone}/${CAREER_PLAN.length} milestones complete — Goal: 12,000 AED+</div>`+renderSection(CAREER_PLAN,CAREER_PLAN,'career');
+  document.getElementById('biz-plan').innerHTML=`<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">${bizDone}/${BIZ_PLAN.length} milestones complete — UAE Scrap Metal Trading</div>`+renderSection(BIZ_PLAN,BIZ_PLAN,'biz');
+  document.getElementById('wedding-plan').innerHTML=`<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">${wedDone}/${WEDDING_PLAN.length} tasks complete — July 19 MashaAllah!</div>`+renderSection(WEDDING_PLAN,WEDDING_PLAN,'wedding');
+}
+
+async function togglePlan(id,cb){
+  if(!planItems)planItems={};
+  planItems[id]=cb.checked;
+  renderPlan();await saveCloud();
+}
+
+function addPlanItem(){
+  const txt=document.getElementById('plan-text-in').value.trim();if(!txt)return;
+  const cat=document.getElementById('plan-cat-in').value;
+  const priority=document.getElementById('plan-priority-in').value;
+  const id='custom-'+Date.now();
+  const item={id,text:txt,priority};
+  const maps={career:CAREER_PLAN,business:BIZ_PLAN,wedding:WEDDING_PLAN,personal:CAREER_PLAN};
+  (maps[cat]||CAREER_PLAN).push(item);
+  document.getElementById('plan-text-in').value='';
+  flash('plan-flash');renderPlan();saveCloud();
+}
+
+function renderActions(){
+  const all=[...DAILY_ACTIONS,...customActions];
+  document.getElementById('actions-list').innerHTML=all.map(a=>{
+    const done=actionsDone[a.id]||false;
+    return `<div class="card" style="opacity:${done?.7:1};margin-bottom:7px">
+      <div style="display:flex;align-items:flex-start;gap:9px;margin-bottom:6px">
+        <div style="width:34px;height:34px;border-radius:var(--border-radius-md);background:${a.color||'#F1EFE8'};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="ti ${a.icon||'ti-star'}" aria-hidden="true" style="font-size:16px;color:${a.ic||'#534AB7'}"></i>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);${done?'text-decoration:line-through;color:var(--color-text-tertiary)':''}">${esc(a.title)}</div>
+          <div style="margin-top:4px"><span class="badge ${a.impact==='high'?'bg':'bb'}">${a.impact==='high'?'High impact':'Good to do'}</span> <span style="font-size:11px;color:var(--color-text-tertiary);margin-left:4px">${a.cat||''}</span></div>
+        </div>
+        ${a.custom?`<button class="del-btn" onclick="delCustomAction('${a.id}')" aria-label="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button>`:''}
+      </div>
+      <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.55;margin-bottom:7px">${esc(a.why)}</div>
+      <div style="display:flex;align-items:center;gap:7px">
+        <input type="checkbox" style="width:15px;height:15px;accent-color:#534AB7;cursor:pointer" id="acb-${a.id}" ${done?'checked':''} onchange="toggleAction('${a.id}',this)">
+        <label for="acb-${a.id}" style="font-size:12px;color:var(--color-text-secondary);${done?'text-decoration:line-through;color:var(--color-text-tertiary)':''};cursor:pointer">${done?'Done today — MashaAllah!':'Mark as done today'}</label>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function toggleAction(id,cb){actionsDone[id]=cb.checked;renderActions();updateStats();await saveCloud();}
+
+function addCustomAction(){
+  const title=document.getElementById('ca-title').value.trim();if(!title)return;
+  const why=document.getElementById('ca-why').value.trim();
+  const a={id:'ca-'+Date.now(),icon:'ti-star',color:'#FAEEDA',ic:'#854F0B',title,why:why||'My personal commitment for a better future.',impact:'high',cat:'custom',custom:true};
+  customActions.push(a);
+  document.getElementById('ca-title').value='';document.getElementById('ca-why').value='';
+  flash('act-flash');renderActions();updateStats();saveCloud();
+}
+async function delCustomAction(id){customActions=customActions.filter(a=>a.id!==id);delete actionsDone[id];renderActions();updateStats();await saveCloud();}
+
+function addExpense(){
+  const name=document.getElementById('exp-name').value.trim();
+  const amt=parseFloat(document.getElementById('exp-amt').value);
+  if(!name||!amt)return;
+  expenses.push({id:Date.now(),name,amt,cat:document.getElementById('exp-cat').value,date:new Date().toLocaleDateString()});
+  document.getElementById('exp-name').value='';document.getElementById('exp-amt').value='';
+  flash('exp-flash');renderExpenses();saveCloud();
+}
+
+function renderExpenses(){
+  const total=expenses.reduce((s,e)=>s+e.amt,0);
+  const budget=8000;
+  const remaining=budget-total;
+  const bycat={};expenses.forEach(e=>bycat[e.cat]=(bycat[e.cat]||0)+e.amt);
+  document.getElementById('exp-stats').innerHTML=`
+    <div class="stat"><div class="stat-n">${total.toFixed(0)}</div><div class="stat-l">Total spent (AED)</div></div>
+    <div class="stat"><div class="stat-n" style="color:${remaining<0?'#E24B4A':'#3B6D11'}">${remaining.toFixed(0)}</div><div class="stat-l">Remaining of 8,000 AED</div></div>
+    <div class="stat"><div class="stat-n">${expenses.length}</div><div class="stat-l">Transactions</div></div>
+    <div class="stat"><div class="stat-n">${Math.round((total/budget)*100)}%</div><div class="stat-l">Budget used</div></div>`;
+  const list=document.getElementById('exp-list');
+  if(!expenses.length){list.innerHTML='<div style="text-align:center;padding:1.5rem;color:var(--color-text-secondary);font-size:13px">No expenses yet. Add your first above.</div>';return;}
+  list.innerHTML=expenses.slice().reverse().map(e=>`
+    <div class="exp-row">
+      <div><div class="exp-name">${esc(e.name)}</div><div class="exp-cat">${e.cat} · ${e.date}</div></div>
+      <div class="exp-amt">AED ${e.amt.toFixed(2)}</div>
+      <button class="del-btn" onclick="delExpense(${e.id})" aria-label="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button>
+    </div>`).join('');
+}
+
+async function delExpense(id){expenses=expenses.filter(e=>e.id!==id);renderExpenses();await saveCloud();}
+function clearExpenses(){if(confirm('Clear all expenses?')){expenses=[];renderExpenses();saveCloud();}}
+function exportExpCSV(){
+  if(!expenses.length){alert('No expenses yet!');return;}
+  const rows=[['Name','Category','Amount (AED)','Date'],...expenses.map(e=>[`"${e.name}"`,e.cat,e.amt.toFixed(2),e.date])];
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='expenses.csv';a.click();
+}
+
+function selTag(btn){document.querySelectorAll('.tag-b').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');activeTag=btn.dataset.tag;}
+
+async function saveThought(){
+  const txt=document.getElementById('thought-in').value.trim();if(!txt)return;
+  thoughts.unshift({id:Date.now(),text:txt,tag:activeTag,context:'other',energy:'inspired',time:new Date().toLocaleString(),expanded:null});
+  document.getElementById('thought-in').value='';
+  flash('cap-flash');updateStats();await saveCloud();
+}
+
+function setFilt(btn){document.querySelectorAll('.filt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');activeFilt=btn.dataset.f;renderVault();}
+
+function renderVault(){
+  const filtered=activeFilt==='all'?thoughts:thoughts.filter(t=>t.tag===activeFilt);
+  const counts={};thoughts.forEach(t=>counts[t.tag]=(counts[t.tag]||0)+1);
+  document.getElementById('v-total').textContent=thoughts.length;
+  document.getElementById('v-pos').textContent=(counts.positive||0)+(counts.gratitude||0);
+  document.getElementById('v-ideas').textContent=counts.idea||0;
+  document.getElementById('v-grat').textContent=counts.gratitude||0;
+  const list=document.getElementById('vault-list');
+  if(!filtered.length){list.innerHTML='<div style="text-align:center;padding:1.5rem;color:var(--color-text-secondary);font-size:13px">No thoughts yet in this category.</div>';return;}
+  const tagBadge=tag=>({idea:'<span class="badge bb">Idea</span>',positive:'<span class="badge bg">Positive</span>',goal:'<span class="badge bp">Goal</span>',insight:'<span class="badge ba">Insight</span>',gratitude:'<span class="badge br">Gratitude</span>',random:'<span class="badge bgr">Random</span>'}[tag]||'');
+  list.innerHTML=filtered.map(t=>`<div class="t-item" id="ti-${t.id}">
+    <div class="t-text">${esc(t.text)}</div>
+    <div class="t-meta">${tagBadge(t.tag)}<span class="t-time">${t.time}</span></div>
+    ${t.expanded?`<div class="expanded">${esc(t.expanded)}</div>`:''}
+    <div class="t-actions">
+      <button class="btn-xs grn" onclick="quickAmp(${t.id})"><i class="ti ti-sparkles" aria-hidden="true"></i> Amplify</button>
+      <button class="btn-xs" onclick="copyT(${t.id})"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
+      <button class="del-btn" onclick="delThought(${t.id})" aria-label="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button>
+    </div>
+  </div>`).join('');
+}
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function copyT(id){const t=thoughts.find(x=>x.id===id);if(t)navigator.clipboard.writeText(t.text).catch(()=>{});}
+async function delThought(id){thoughts=thoughts.filter(t=>t.id!==id);renderVault();updateStats();await saveCloud();}
+
+function addGoal(){
+  const title=document.getElementById('g-title').value.trim();if(!title)return;
+  const why=document.getElementById('g-why').value.trim();
+  const stepsRaw=document.getElementById('g-steps').value.trim();
+  const steps=stepsRaw?stepsRaw.split(',').map(s=>({text:s.trim(),done:false})).filter(s=>s.text):[];
+  goals.unshift({id:Date.now(),title,why,cat:document.getElementById('g-cat').value,tl:document.getElementById('g-tl').value,steps});
+  document.getElementById('g-title').value='';document.getElementById('g-why').value='';document.getElementById('g-steps').value='';
+  flash('g-flash');renderGoals();updateStats();saveCloud();
+}
+
+function renderGoals(){
+  const list=document.getElementById('goals-list');
+  if(!goals.length){list.innerHTML='<div style="text-align:center;padding:1.5rem;color:var(--color-text-secondary);font-size:13px">No goals yet. Add your first above!</div>';return;}
+  const cp=c=>({mind:'<span class="badge bp">Mindset</span>',health:'<span class="badge bg">Health</span>',career:'<span class="badge bb">Career</span>',business:'<span class="badge ba">Business</span>',relation:'<span class="badge br">Relationships</span>',finance:'<span class="badge ba">Finance</span>'}[c]||'');
+  const tl=t=>({weekly:'This week',monthly:'This month',quarterly:'3 months',yearly:'This year'}[t]||t);
+  list.innerHTML=goals.map(g=>{
+    const done=g.steps.filter(s=>s.done).length;
+    const pct=g.steps.length?Math.round((done/g.steps.length)*100):0;
+    return `<div class="goal-item" id="gi-${g.id}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:5px">
+        <div><div style="font-size:14px;font-weight:500;color:var(--color-text-primary)">${esc(g.title)}</div>${g.why?`<div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">"${esc(g.why)}"</div>`:''}</div>
+        <button class="del-btn" onclick="delGoal(${g.id})" aria-label="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button>
+      </div>
+      <div class="t-meta" style="margin-bottom:5px">${cp(g.cat)}<span style="font-size:11px;color:var(--color-text-secondary)">${tl(g.tl)}</span></div>
+      ${g.steps.length?`<div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:12px;font-weight:500;color:#534AB7">${pct}% complete</span><span style="font-size:11px;color:var(--color-text-tertiary)">${done}/${g.steps.length} steps</span></div>
+      <div>${g.steps.map((s,i)=>`<div class="plan-item"><input type="checkbox" class="plan-cb" ${s.done?'checked':''} onchange="toggleStep(${g.id},${i},this)"><span class="plan-text ${s.done?'done':''}">${esc(s.text)}</span></div>`).join('')}</div>`:''}
+      <div class="t-actions" style="margin-top:7px">
+        <button class="btn-xs grn" onclick="goalMotiv(${g.id})"><i class="ti ti-sparkles" aria-hidden="true"></i> Get motivation</button>
+      </div>
+      <div id="gm-${g.id}" style="display:none;margin-top:7px;font-size:12px;color:#27500A;background:#EAF3DE;padding:7px 10px;border-radius:var(--border-radius-md);line-height:1.6"></div>
+    </div>`;
+  }).join('');
+}
+
+async function toggleStep(gid,idx,cb){const g=goals.find(x=>x.id===gid);if(!g)return;g.steps[idx].done=cb.checked;renderGoals();updateStats();await saveCloud();}
+async function delGoal(id){goals=goals.filter(g=>g.id!==id);renderGoals();updateStats();await saveCloud();}
+
+async function goalMotiv(id){
+  const g=goals.find(x=>x.id===id);if(!g)return;
+  const div=document.getElementById('gm-'+id);div.style.display='block';div.textContent='Generating...';
+  div.textContent=await callClaude(`Goal: "${g.title}". Why: "${g.why||'personal growth'}". Give a 3-sentence Islamic-inspired motivational push referencing sabr, tawakkul, and effort. Energizing and personal.`,'motivation');
+}
+
+function populateAmpSel(){
+  const sel=document.getElementById('amp-sel');
+  sel.innerHTML='<option value="">— pick a saved thought —</option>'+thoughts.map(t=>`<option value="${t.id}">${t.text.substring(0,50)}${t.text.length>50?'...':''}</option>`).join('');
+}
+
+async function amplify(){
+  const selId=document.getElementById('amp-sel').value;
+  const custom=document.getElementById('amp-custom').value.trim();
+  let text='';
+  if(selId){const t=thoughts.find(x=>x.id==selId);if(t)text=t.text;}
+  if(!text&&custom)text=custom;
+  if(!text){alert('Please select or write a thought.');return;}
+  const mode=document.getElementById('amp-mode').value;
+  document.getElementById('amp-result').style.display='block';
+  const out=document.getElementById('amp-out');
+  out.textContent='Generating your expansion...';out.className='ai-out loading';
+  const result=await callClaude(text,mode);
+  out.textContent=result;out.className='ai-out';
+  out.dataset.text=result;out.dataset.source=text;
+}
+
+async function quickAmp(id){
+  const t=thoughts.find(x=>x.id===id);if(!t)return;
+  const card=document.getElementById('ti-'+id);
+  let ex=card.querySelector('.expanded');if(ex)ex.remove();
+  const div=document.createElement('div');div.className='expanded';div.textContent='Generating...';card.appendChild(div);
+  const result=await callClaude(t.text,'positive');
+  t.expanded=result;div.textContent=result;await saveCloud();
+}
+
+async function saveAmpResult(){
+  const out=document.getElementById('amp-out');if(!out.dataset.source)return;
+  thoughts.unshift({id:Date.now(),text:out.dataset.source,tag:'positive',context:'other',energy:'inspired',time:new Date().toLocaleString(),expanded:out.dataset.text});
+  await saveCloud();flash('cap-flash');
+}
+function copyAmp(){const out=document.getElementById('amp-out');navigator.clipboard.writeText(out.textContent).catch(()=>{});}
+
+async function callClaude(text,mode){
+  const prompts={
+    positive:`Warm positivity coach. Expand: "${text}" — reveal hidden potential, 2 growth opportunities, closing affirmation. Max 180 words. Flowing prose.`,
+    goal:`Life coach. Transform: "${text}" into a goal action plan — why it matters, 3 concrete steps, what success feels like. Max 180 words.`,
+    affirmation:`Create 3 powerful personal affirmations based on: "${text}". Present tense, personal, emotionally resonant. Gentle to bold. Max 150 words.`,
+    islamic:`Islamic reflection on: "${text}". Reference Quranic verse or Hadith with source. Show how Islam guides toward this outcome. Warm and uplifting. Max 180 words.`,
+    motivation:`Elite motivational coach. Fire-starting message about: "${text}". Bold, warm, specific. Max 180 words.`,
+    career:`Career growth coach for a Process Engineer in UAE earning 8,000 AED targeting 12,000+ AED. Give specific advice based on: "${text}". Practical and motivating. Max 180 words.`,
+  };
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompts[mode]||prompts.positive}]})});
+    const data=await res.json();
+    return data.content?.[0]?.text||'Could not generate. Please try again.';
+  }catch(e){return 'Connection issue — please try again.';}
+}
+
+function exportCSV(){
+  if(!thoughts.length){alert('No thoughts!');return;}
+  const rows=[['Thought','Tag','Time','Expanded'],...thoughts.map(t=>[`"${(t.text||'').replace(/"/g,'""')}"`,t.tag,t.time,`"${(t.expanded||'').replace(/"/g,'""')}"`])];
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='vault.csv';a.click();
+}
+
+async function clearAll(){
+  if(!confirm('Clear ALL data from cloud?'))return;
+  thoughts=[];goals=[];dhikrC={};actionsDone={};customActions=[];expenses=[];planItems={};prayers={};
+  try{
+    for(const k of['pos-thoughts','pos-goals','pos-dhikr','pos-actions','pos-custom-actions','pos-expenses','pos-plan-items','pos-prayers'])
+      await window.storage.delete(k);
+  }catch(e){}
+  setCloud('ok','Cleared');renderVault();renderGoals();updateStats();
+}
+
+(async function init(){
+  document.getElementById('grat-p').textContent=GRAT_PROMPTS[Math.floor(Math.random()*GRAT_PROMPTS.length)];
+  showQ();showWord();showConcept();
+  await loadCloud();
+  renderPrayers();updateStats();
+})();
+</script>
