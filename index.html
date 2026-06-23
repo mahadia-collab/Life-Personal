@@ -618,34 +618,67 @@ function setCloud(s,m){
   ['clbl','clbl2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=m;});
 }
 
-function saveCloud(){
-  setCloud('saving','Saving...');
+const SB_URL='https://scckmqmozwbwzoqcrnkz.supabase.co';
+const SB_KEY='sb_publishable_ZBF9x-W-8KRCYI0wVaVFag_7Y3lPfOu';
+
+function saveLocal(){
   try{
-    const keys={
-      'pos-thoughts':thoughts,'pos-goals':goals,'pos-dhikr':dhikrC,
-      'pos-actions':actionsDone,'pos-custom-actions':customActions,
-      'pos-expenses':expenses,'pos-plan-items':planItems,'pos-prayers':prayers
-    };
-    for(const[k,v] of Object.entries(keys))localStorage.setItem(k,JSON.stringify(v));
-    setCloud('ok','Saved to device \u2713');
-  }catch(e){setCloud('error','Save failed — storage full?');}
+    const d={thoughts,goals,dhikr:dhikrC,actions_done:actionsDone,custom_actions:customActions,expenses,plan_items:planItems,prayers};
+    localStorage.setItem('pos-backup',JSON.stringify(d));
+  }catch(e){}
+}
+
+function loadLocal(){
+  try{
+    const r=localStorage.getItem('pos-backup');
+    if(!r)return false;
+    const d=JSON.parse(r);
+    thoughts=d.thoughts||[];goals=d.goals||[];dhikrC=d.dhikr||{};
+    actionsDone=d.actions_done||{};customActions=d.custom_actions||[];
+    expenses=d.expenses||[];planItems=d.plan_items||{};prayers=d.prayers||{};
+    return true;
+  }catch(e){return false;}
+}
+
+async function saveCloud(){
+  setCloud('saving','Syncing...');
+  saveLocal();
+  try{
+    const body={thoughts,goals,dhikr:dhikrC,actions_done:actionsDone,custom_actions:customActions,expenses,plan_items:planItems,prayers,updated_at:new Date().toISOString()};
+    const res=await fetch(`${SB_URL}/rest/v1/user_data?id=eq.main`,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify(body)
+    });
+    if(!res.ok)throw new Error(res.status);
+    setCloud('ok','Synced to cloud \u2713');
+  }catch(e){setCloud('error','Saved locally (offline)');}
 }
 
 async function loadCloud(){
   setCloud('saving','Loading...');
   try{
-    const load=(k,d)=>{try{const r=localStorage.getItem(k);return r?JSON.parse(r):d;}catch{return d;}};
-    thoughts=load('pos-thoughts',[]);
-    goals=load('pos-goals',[]);
-    dhikrC=load('pos-dhikr',{});
-    actionsDone=load('pos-actions',{});
-    customActions=load('pos-custom-actions',[]);
-    expenses=load('pos-expenses',[]);
-    planItems=load('pos-plan-items',{});
-    prayers=load('pos-prayers',{});
-    setCloud('ok',`Loaded \u2014 ${thoughts.length} thoughts, ${goals.length} goals`);
+    const res=await fetch(`${SB_URL}/rest/v1/user_data?id=eq.main&select=*`,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    });
+    if(!res.ok)throw new Error(res.status);
+    const rows=await res.json();
+    if(rows&&rows.length>0){
+      const d=rows[0];
+      thoughts=d.thoughts||[];goals=d.goals||[];dhikrC=d.dhikr||{};
+      actionsDone=d.actions_done||{};customActions=d.custom_actions||[];
+      expenses=d.expenses||[];planItems=d.plan_items||{};prayers=d.prayers||{};
+      saveLocal();
+      setCloud('ok',`Synced \u2014 ${thoughts.length} thoughts, ${goals.length} goals`);
+    } else {
+      setCloud('ok','Ready \u2014 no data yet');
+    }
     updateStats();
-  }catch(e){setCloud('error','Load failed');}
+  }catch(e){
+    const ok=loadLocal();
+    setCloud('error',ok?'Offline \u2014 showing local data':'Could not load data');
+    updateStats();
+  }
 }
 
 function go(name,btn){
@@ -1059,11 +1092,17 @@ function exportCSV(){
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='vault.csv';a.click();
 }
 
-function clearAll(){
-  if(!confirm('Clear ALL saved data on this device?'))return;
+async function clearAll(){
+  if(!confirm('Clear ALL data everywhere — device and cloud?'))return;
   thoughts=[];goals=[];dhikrC={};actionsDone={};customActions=[];expenses=[];planItems={};prayers={};
-  for(const k of['pos-thoughts','pos-goals','pos-dhikr','pos-actions','pos-custom-actions','pos-expenses','pos-plan-items','pos-prayers'])
-    localStorage.removeItem(k);
+  localStorage.removeItem('pos-backup');
+  try{
+    await fetch(`${SB_URL}/rest/v1/user_data?id=eq.main`,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'},
+      body:JSON.stringify({thoughts:[],goals:[],dhikr:{},actions_done:{},custom_actions:[],expenses:[],plan_items:{},prayers:{}})
+    });
+  }catch(e){}
   setCloud('ok','Cleared');renderVault();renderGoals();updateStats();
 }
 
