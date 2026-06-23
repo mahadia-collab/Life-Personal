@@ -176,7 +176,7 @@ select{padding:7px 9px;border-radius:var(--border-radius-md);border:.5px solid v
 
 <!-- TODAY PAGE -->
 <div id="pg-home" class="pg active">
-  <div class="cbar"><span class="cdot" id="cdot"></span><span id="clbl">Connecting...</span></div>
+  <div class="cbar"><span class="cdot" id="cdot"></span><span id="clbl">Loading...</span></div>
   <div class="today-bar" id="today-bar"><i class="ti ti-star" aria-hidden="true" style="font-size:16px"></i><span id="today-txt">Loading today's progress...</span></div>
   <div class="qtabs">
     <button class="qtab active" onclick="switchQ('quran',this)">Quran</button>
@@ -618,7 +618,7 @@ function setCloud(s,m){
   ['clbl','clbl2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=m;});
 }
 
-async function saveCloud(){
+function saveCloud(){
   setCloud('saving','Saving...');
   try{
     const keys={
@@ -626,24 +626,24 @@ async function saveCloud(){
       'pos-actions':actionsDone,'pos-custom-actions':customActions,
       'pos-expenses':expenses,'pos-plan-items':planItems,'pos-prayers':prayers
     };
-    for(const[k,v] of Object.entries(keys))await window.storage.set(k,JSON.stringify(v));
-    setCloud('ok','All saved to cloud');
-  }catch(e){setCloud('error','Save failed');}
+    for(const[k,v] of Object.entries(keys))localStorage.setItem(k,JSON.stringify(v));
+    setCloud('ok','Saved to device \u2713');
+  }catch(e){setCloud('error','Save failed — storage full?');}
 }
 
 async function loadCloud(){
   setCloud('saving','Loading...');
   try{
-    const load=async(k,d)=>{try{const r=await window.storage.get(k);return r&&r.value?JSON.parse(r.value):d;}catch{return d;}};
-    thoughts=await load('pos-thoughts',[]);
-    goals=await load('pos-goals',[]);
-    dhikrC=await load('pos-dhikr',{});
-    actionsDone=await load('pos-actions',{});
-    customActions=await load('pos-custom-actions',[]);
-    expenses=await load('pos-expenses',[]);
-    planItems=await load('pos-plan-items',{});
-    prayers=await load('pos-prayers',{});
-    setCloud('ok',`Loaded — ${thoughts.length} thoughts, ${goals.length} goals`);
+    const load=(k,d)=>{try{const r=localStorage.getItem(k);return r?JSON.parse(r):d;}catch{return d;}};
+    thoughts=load('pos-thoughts',[]);
+    goals=load('pos-goals',[]);
+    dhikrC=load('pos-dhikr',{});
+    actionsDone=load('pos-actions',{});
+    customActions=load('pos-custom-actions',[]);
+    expenses=load('pos-expenses',[]);
+    planItems=load('pos-plan-items',{});
+    prayers=load('pos-prayers',{});
+    setCloud('ok',`Loaded \u2014 ${thoughts.length} thoughts, ${goals.length} goals`);
     updateStats();
   }catch(e){setCloud('error','Load failed');}
 }
@@ -1059,13 +1059,11 @@ function exportCSV(){
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));a.download='vault.csv';a.click();
 }
 
-async function clearAll(){
-  if(!confirm('Clear ALL data from cloud?'))return;
+function clearAll(){
+  if(!confirm('Clear ALL saved data on this device?'))return;
   thoughts=[];goals=[];dhikrC={};actionsDone={};customActions=[];expenses=[];planItems={};prayers={};
-  try{
-    for(const k of['pos-thoughts','pos-goals','pos-dhikr','pos-actions','pos-custom-actions','pos-expenses','pos-plan-items','pos-prayers'])
-      await window.storage.delete(k);
-  }catch(e){}
+  for(const k of['pos-thoughts','pos-goals','pos-dhikr','pos-actions','pos-custom-actions','pos-expenses','pos-plan-items','pos-prayers'])
+    localStorage.removeItem(k);
   setCloud('ok','Cleared');renderVault();renderGoals();updateStats();
 }
 
@@ -1073,6 +1071,6 @@ async function clearAll(){
   document.getElementById('grat-p').textContent=GRAT_PROMPTS[Math.floor(Math.random()*GRAT_PROMPTS.length)];
   showQ();showWord();showConcept();
   await loadCloud();
-  renderPrayers();updateStats();
+  renderPrayers();renderDhikr();renderActions();updateStats();
 })();
 </script>
